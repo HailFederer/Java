@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class League {
+public class League_Recursive {
 	
 	static int[][] array;
 	static LinkedList<Integer> list;
