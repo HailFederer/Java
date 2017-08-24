@@ -11,32 +11,34 @@ public class ErdosNumbers {
 
 	public static void main(String[] args) {
 		
-		// nameList : í•˜ë‚˜ì˜ ë…¼ë¬¸ ê³µë™ ì €ìë“¤ì˜ ì´ë¦„ì„ ì €ì¥
+		// nameList : ÇÏ³ªÀÇ ³í¹® °øµ¿ ÀúÀÚµéÀÇ ÀÌ¸§À» ÀúÀå
+		// ErdosList : Erdos, P.¸¦ erdosList¿¡ ÀúÀåÇÏ±â À§ÇÑ °´Ã¼
 		HashSet<String> nameList = new HashSet<String>();
+		HashSet<String> ErdosList = new HashSet<String>();
 		
-		// < erdosList > : Erdos, P.ì™€ ê´€ê³„ê°€ ìˆëŠ” ì €ìë“¤ì˜ ì´ë¦„ì„ ì´Œìˆ˜ë³„ë¡œ ì €ì¥
+		// < erdosList > : Erdos, P.¿Í °ü°è°¡ ÀÖ´Â ÀúÀÚµéÀÇ ÀÌ¸§À» ÃÌ¼öº°·Î ÀúÀå
 		// - key:0 -> Erdos, P.
-		// - key:1 -> 1ì´Œ ê´€ê³„ì¸ ì €ìë“¤
-		// - key:2 -> 2ì´Œ ê´€ê³„ì¸ ì €ìë“¤
+		// - key:1 -> 1ÃÌ °ü°èÀÎ ÀúÀÚµé
+		// - key:2 -> 2ÃÌ °ü°èÀÎ ÀúÀÚµé
 		//
-		// < isolatedList > : ì—°ê´€ ì—†ëŠ” ì €ìë“¤ì„ ë…¼ë¬¸ ë³„ë¡œ ì €ì¥
+		// < isolatedList > : ¿¬°ü ¾ø´Â ÀúÀÚµéÀ» ³í¹® º°·Î ÀúÀå
 		HashMap<Integer, HashSet<String>> erdosList = new HashMap<Integer, HashSet<String>>();
 		HashMap<Integer, HashSet<String>> isolatedList = new HashMap<Integer, HashSet<String>>();
-		nameList.add("Erdos, P.");
-		erdosList.put(0, nameList);
+		ErdosList.add("Erdos, P.");
+		erdosList.put(0, ErdosList);
 
 		Scanner sc = new Scanner(System.in);
 		//int paperNum = sc.nextInt();
 		//int phdNum = sc.nextInt();
 		
-		// degreeOfKinship : ê°œë³„ ì €ìì˜ ì´Œìˆ˜ë¥¼ ë‹´ì„ ë³€ìˆ˜
-		// minDegreeOfKinship : í•œ ë…¼ë¬¸ ì €ìë“¤ì˜ ì´Œìˆ˜ ì¤‘ ê°€ì¥ ì ì€ ì´Œìˆ˜ë¥¼ ë‹´ì„ ë³€ìˆ˜
+		// degreeOfKinship : °³º° ÀúÀÚÀÇ ÃÌ¼ö¸¦ ´ãÀ» º¯¼ö
+		// minDegreeOfKinship : ÇÑ ³í¹® ÀúÀÚµéÀÇ ÃÌ¼ö Áß °¡Àå ÀûÀº ÃÌ¼ö¸¦ ´ãÀ» º¯¼ö
 		int degreeOfKinship;
 		int minDegreeOfKinship = 0;
 		
-		for(int j=0; j<1; j++) {
+		for(int j=0; j<3; j++) {
 			
-			// nameList í•´ì‰¬ì…‹ ê°ì²´ì— ë…¼ë¬¸ í•˜ë‚˜ì˜ ì €ìë“¤ ì´ë¦„ ì €ì¥
+			// nameList ÇØ½¬¼Â °´Ã¼¿¡ ³í¹® ÇÏ³ªÀÇ ÀúÀÚµé ÀÌ¸§ ÀúÀå
 			String paper = sc.nextLine();
 			String[] strArray = paper.split(":");
 			StringTokenizer st = new StringTokenizer(strArray[0], ",");
@@ -44,90 +46,86 @@ public class ErdosNumbers {
 				nameList.add(st.nextToken().trim()+", "+st.nextToken().trim());
 			}
 			
-			// ë…¼ë¬¸ í•˜ë‚˜ì˜ ì €ìë“¤ ì´ë¦„ ì¤‘ í•˜ë‚˜ì”© ê°€ì ¸ì™€ì„œ,
-			// erdosListì— ì €ì¥ëœ Erdos, P.ì™€ ê´€ê³„ëœ ì €ìë“¤ì„ ê°€ê¹Œìš´ ì´Œìˆ˜ë¶€í„° íƒìƒ‰.
-			// í•´ë‹¹ ë…¼ë¬¸ì— ì´ë¯¸ ê´€ê³„ëœ ì €ìê°€ ìˆëŠ” ì§€ë¥¼ íŒë³„.
-			// ìˆìœ¼ë©´ ê·¸ ì €ìì˜ ì´Œìˆ˜ë¥¼ degreeOfKinship ë³€ìˆ˜ì— ì €ì¥.
-			// ìœ„ì™€ ê°™ì€ ê³¼ì •ì„ í•œ ë…¼ë¬¸ì˜ ëª¨ë“  ì €ìë“¤ë¡œ ë°˜ë³µí•´, ìµœì†Œ ì´Œìˆ˜ë¥¼ ê°€ì§„ ì €ìë¥¼ ì°¾ìŒ.
-			// í•´ë‹¹ ì €ìë¥¼ ì œì™¸í•œ ë‚˜ë¨¸ì§€ ì €ìë“¤ì„ erdosListì— ì €ì¥
+			// ³í¹® ÇÏ³ªÀÇ ÀúÀÚµé ÀÌ¸§ Áß ÇÏ³ª¾¿ °¡Á®¿Í¼­,
+			// erdosList¿¡ ÀúÀåµÈ Erdos, P.¿Í °ü°èµÈ ÀúÀÚµéÀ» °¡±î¿î ÃÌ¼öºÎÅÍ Å½»ö.
+			// ÇØ´ç ³í¹®¿¡ ÀÌ¹Ì °ü°èµÈ ÀúÀÚ°¡ ÀÖ´Â Áö¸¦ ÆÇº°.
+			// ÀÖÀ¸¸é ±× ÀúÀÚÀÇ ÃÌ¼ö¸¦ degreeOfKinship º¯¼ö¿¡ ÀúÀå.
+			// À§¿Í °°Àº °úÁ¤À» ÇÑ ³í¹®ÀÇ ¸ğµç ÀúÀÚµé·Î ¹İº¹ÇØ, ÃÖ¼Ò ÃÌ¼ö¸¦ °¡Áø ÀúÀÚ¸¦ Ã£À½.
+			// ÇØ´ç ÀúÀÚ¸¦ Á¦¿ÜÇÑ ³ª¸ÓÁö ÀúÀÚµéÀ» erdosList¿¡ ÀúÀå
 			Iterator<String> it = nameList.iterator();
 			String closestAuthor = null;
+			degreeOfKinship = 1000000;
+			minDegreeOfKinship = 1000000;
+			
 			while(it.hasNext()) {
-				
-				degreeOfKinship = 1000000;
-				minDegreeOfKinship = 1000000;
 				String name = it.next();
-	System.out.println(name);
-	System.out.println(erdosList.size());
+
 				Set<Integer> set2 = erdosList.keySet();
 				Iterator<Integer> it2 = set2.iterator();
 				while(it2.hasNext()) {
-					int ii = it2.next();
-					HashSet<String> set = erdosList.get(ii);
+					int key = it2.next();
+					HashSet<String> authorListByKinship = erdosList.get(key);
 					
-					if(set.contains(name)) {
-						degreeOfKinship = ii+1;
+					if(authorListByKinship.contains(name)) {
+						degreeOfKinship = key+1;
 						closestAuthor = name;
+						if(degreeOfKinship < minDegreeOfKinship) {
+							minDegreeOfKinship = degreeOfKinship;
+						}
+						System.out.println(name+" : "+key+" : "+minDegreeOfKinship);
 						break;
 					}
-				}
-	
-				/*for(int i=0; i<erdosList.size(); i++) {
-	//				System.out.println(i);
-					HashSet<String> set = erdosList.get(i);
-					
-					if(set.contains(name)) {
-						degreeOfKinship = i+1;
-						closestAuthor = name;
-						break;
-					}
-				}*/
-				if(degreeOfKinship < minDegreeOfKinship) {
-					minDegreeOfKinship = degreeOfKinship;
 				}
 			}	
 			if(closestAuthor != null) {
 				nameList.remove(closestAuthor);
 			}
-	//		System.out.println(minDegreeOfKinship);
-		}
+			
+			// ¾î¶² erdosList¿¡µµ ¾ø´Â nameListµéÀº º°µµ ÀúÀåÇØµ×´Ù ÃÌ¼ö Å½»ö ½Ã ÇÔ²² Å½»ö
+			if(minDegreeOfKinship == 1000000) {
+				System.out.println(1);
+				isolatedList.put(isolatedList.size(), nameList);
+			} // 
+			else if(minDegreeOfKinship == erdosList.size()) {
+				System.out.println(2);
+				erdosList.put(erdosList.size(), nameList);
+			} 
+			else {	// 
+				System.out.println(3);
+				HashSet<String> set = erdosList.get(minDegreeOfKinship);
+				Iterator<String> it2 = nameList.iterator();
+				while(it2.hasNext()) {
+					String author = it2.next();
+					set.add(author);
 
-		// ì–´ë–¤ erdosListì—ë„ ì—†ëŠ” nameListë“¤ì€ ë³„ë„ ì €ì¥í•´ë’€ë‹¤ ì´Œìˆ˜ íƒìƒ‰ ì‹œ í•¨ê»˜ íƒìƒ‰
-		if(minDegreeOfKinship == 1000000) {
-			isolatedList.put(isolatedList.size(), nameList);
-		} // 
-		else if(minDegreeOfKinship == erdosList.size()) {
-			erdosList.put(erdosList.size(), nameList);
-		} 
-		else {	// 
-			HashSet<String> set = erdosList.get(minDegreeOfKinship);
-			Iterator<String> it = nameList.iterator();
-			while(it.hasNext()) {
-				String author = it.next();
-				set.add(author);
-
-				// erdosListì— ë“¤ì–´ê°„ nameListë“¤, ê·¸ ì•„ë˜ erdosList íƒìƒ‰í•´ì„œ ì¡´ì¬í•˜ë©´ ì‚­ì œ
-				for(int i=minDegreeOfKinship+1; i<erdosList.size(); i++) {
-					HashSet<String> authorList = erdosList.get(i);
-					if(authorList.contains(author)) {
-						authorList.remove(author);
+					// erdosList¿¡ µé¾î°£ nameListµé, ±× ¾Æ·¡ erdosList Å½»öÇØ¼­ Á¸ÀçÇÏ¸é »èÁ¦
+					for(int i=minDegreeOfKinship+1; i<erdosList.size(); i++) {
+						HashSet<String> authorList2 = erdosList.get(i);
+						if(authorList2.contains(author)) {
+							authorList2.remove(author);
+						}
 					}
 				}
 			}
 		}
 		
-		System.out.println(erdosList.size());
+		//System.out.println("erdosList.size() : " +erdosList.size());
 		
 		while(true) {
 			String name = sc.nextLine();
 			
 			for(int i=0; i<erdosList.size(); i++) {
-				Iterator<String> it = erdosList.get(i+1).iterator();
+				HashSet<String> set = erdosList.get(i);
+				if(set.contains(name)) {
+					System.out.println(name +" "+ (i));
+					break;
+				}
+				/*Iterator<String> it = erdosList.get(i).iterator();
 				while(it.hasNext()) {
 					if(it.next().equals(name)) {
-						System.out.println(name +" "+ (i+1));
+						System.out.println(name +" "+ (i));
 					}
-				}
+				}*/
 			}
 		}
 	}
