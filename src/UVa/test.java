@@ -5,12 +5,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class test {
 
 	public static void main(String[] args) {
 
-		HashMap<Integer, HashSet<String>> hm = new HashMap<Integer, HashSet<String>>();
+		TreeMap<Integer, HashSet<String>> hm = new TreeMap<Integer, HashSet<String>>();
 		
 		HashSet<String> hs = new HashSet<String>();
 		
@@ -19,21 +20,24 @@ public class test {
 		hs.add("");
 		hm.put(hm.size(), hs);
 		
+		hs = new HashSet<String>();
+		hs.add("cc");
+		hm.put(hm.size(), hs);
+		
 		Set<Integer> set = hm.keySet();
 		Iterator<Integer> it = set.iterator();
 		while(it.hasNext()) {
-			HashSet<String> set2 = hm.get(it.next());
-			set2.remove("aa");
+			int key = it.next();
+			System.out.println(key);
 		}
+		
+		hm.remove(0);
 		
 		Set<Integer> set2 = hm.keySet();
 		Iterator<Integer> it2 = set2.iterator();
 		while(it2.hasNext()) {
-			HashSet<String> set3 = hm.get(it2.next());
-			Iterator<String> it3 = set3.iterator();
-			while(it3.hasNext()) {
-				System.out.println(it3.next()+"11");
-			}
+			int key = it2.next();
+			System.out.println(key);
 		}
 	}
 }
