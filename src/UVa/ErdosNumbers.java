@@ -54,74 +54,7 @@ public class ErdosNumbers {
 					nameList.add(st.nextToken().trim()+", "+st.nextToken().trim());
 				}
 				
-				// 논문 하나의 저자들 이름 중 하나씩 가져와서,
-				// erdosList에 저장된 Erdos, P.와 관계된 저자들을 가까운 촌수부터 탐색.
-				// 해당 논문에 이미 관계된 저자가 있는 지를 판별.
-				// 있으면 그 저자의 촌수를 degreeOfKinship 변수에 저장.
-				// 위와 같은 과정을 한 논문의 모든 저자들로 반복해, 최소 촌수를 가진 저자를 찾음.
-				// 해당 저자를 제외한 나머지 저자들을 erdosList에 저장
-				Iterator<String> it = nameList.iterator();
-				HashSet<String> closestAuthorList = new HashSet<String>();
-				degreeOfKinship = 1000000;
-				minDegreeOfKinship = 1000000;
-				
-				while(it.hasNext()) {
-					String name = it.next();
-	
-					Set<Integer> set2 = erdosList.keySet();
-					Iterator<Integer> it2 = set2.iterator();
-					while(it2.hasNext()) {
-						int key = it2.next();
-						// 촌수별 저자리스트를 authorListByKinship에 담음.
-						HashSet<String> authorListByKinship = erdosList.get(key);
-						
-						if(authorListByKinship.contains(name)) {	
-							degreeOfKinship = key+1;
-							if(degreeOfKinship < minDegreeOfKinship) {
-								minDegreeOfKinship = degreeOfKinship;
-								// erdosList를 촌수의 오름차순으로 탐색하다 해당 저자의 이름이 나오면 Erdos와 가장 가까운 저자로 설정
-								closestAuthorList = new HashSet<String>();
-								closestAuthorList.add(name);	
-							} else if(degreeOfKinship == minDegreeOfKinship) {
-								closestAuthorList.add(name);	
-							}
-							break;
-						}
-					}
-				}
-				if(closestAuthorList.size() == 0) {
-					// 어떤 erdosList에도 없는 nameList들은 별도 저장해뒀다 촌수 탐색 시 함께 탐색
-					isolatedList.put(isolatedList.size(), nameList);
-				} else if(closestAuthorList.size() > 0 && closestAuthorList.size() < nameList.size()) {
-					// 가장 가까운 촌수를 가진 저자들 이름 모두를 nameList에서 제거
-					Iterator<String> it2 = closestAuthorList.iterator();
-					while(it2.hasNext()) {
-						nameList.remove(it2.next());
-					}
-					
-					if(nameList.size() > 0) {
-						
-						if(minDegreeOfKinship == erdosList.size()) {
-							erdosList.put(erdosList.size(), nameList);
-						} 
-						else if(minDegreeOfKinship < erdosList.size()) {
-							HashSet<String> set = erdosList.get(minDegreeOfKinship);
-							Iterator<String> it3 = nameList.iterator();
-							while(it3.hasNext()) {
-								String author = it3.next();
-								set.add(author);
-			
-								// erdosList에 들어간 nameList들, 그 아래 erdosList 탐색해서 존재하면 삭제
-								for(int i=minDegreeOfKinship+1; i<erdosList.size(); i++) {
-									HashSet<String> authorList2 = erdosList.get(i);
-									if(authorList2.contains(author)) {
-										authorList2.remove(author);
-									}
-								}
-							}
-						}
-					}
-				}
+				isolatedList.put(isolatedList.size(), nameList);
 				
 				boolean remainedAuthorYN = true;
 				while(isolatedList != null && isolatedList.size() > 0 && remainedAuthorYN == true) {
@@ -228,6 +161,7 @@ public class ErdosNumbers {
 								int key2 = it2.next();
 								HashSet<String> set6 = erdosList.get(key2);
 								if(set6.contains(isolatedAuthorName)) {
+									System.out.println("아직 한발 남았다..");
 									remainedAuthorYN = true;
 									break label1;
 								}
@@ -237,7 +171,7 @@ public class ErdosNumbers {
 					}
 				}
 				
-				/*Set<Integer> set = erdosList.keySet();
+				Set<Integer> set = erdosList.keySet();
 				Iterator<Integer> it2 = set.iterator();
 				while(it2.hasNext()) {
 					int key = it2.next();
@@ -261,7 +195,7 @@ public class ErdosNumbers {
 						System.out.print(it5.next()+" / ");
 					}
 					System.out.println();
-				}*/
+				}
 			}
 			
 			System.out.println("Scenario "+scenarioIndex++);
