@@ -1,43 +1,40 @@
 package UVa;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;
-
 public class test {
+	
+	static int sum = 0;
+	static int highestScore = 0;
 
 	public static void main(String[] args) {
-
-		TreeMap<Integer, HashSet<String>> hm = new TreeMap<Integer, HashSet<String>>();
 		
-		HashSet<String> hs = new HashSet<String>();
+		int[][] land = {{1,2,3,5},{5,6,7,8},{4,3,2,1}};
+		highestScore = recursive(0, -1, land);
 		
-		hs.add("aa");
-		hs.add("bb");
-		hs.add("");
-		hm.put(hm.size(), hs);
+		System.out.println(highestScore);
+	}
+	
+	public static int recursive(int row, int col, int[][] land) {
 		
-		hs = new HashSet<String>();
-		hs.add("cc");
-		hm.put(hm.size(), hs);
-		
-		Set<Integer> set = hm.keySet();
-		Iterator<Integer> it = set.iterator();
-		while(it.hasNext()) {
-			int key = it.next();
-			System.out.println(key);
+		for(int i=0; i<4; i++) {
+			if(i != col) {
+				sum += land[row][i];
+				if(row < land.length-1) {
+					recursive(row+1, i, land);
+				}
+				if(row == land.length-1) {
+					if(sum > highestScore) {
+						highestScore = sum;
+					}
+				}
+				sum -= land[row][i];
+			}
 		}
 		
-		hm.remove(0);
-		
-		Set<Integer> set2 = hm.keySet();
-		Iterator<Integer> it2 = set2.iterator();
-		while(it2.hasNext()) {
-			int key = it2.next();
-			System.out.println(key);
-		}
+		return highestScore;
 	}
 }
+
+
+
+
+
